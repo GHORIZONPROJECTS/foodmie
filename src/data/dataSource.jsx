@@ -67,7 +67,7 @@ export const orderColumns = [
     { field: 'fullname', headerName: 'Customer Name', width: 150 },
     { field: 'price', headerName: 'Price (N)', width: 100 },
     { field: 'quantity', headerName: 'quantity', width: 80 },
-    { field: 'createdAt', headerName: 'Ordered Date', width: 200 },
+    { field: 'new Date(timestamp.toDate())', headerName: 'Ordered Date', width: 200 },
     { field: 'status', headerName: 'Status', width: 200,
         renderCell:(params) => {
             return <div className={`cellstatus ${params.row.status}`}>{params.row.status} </div>

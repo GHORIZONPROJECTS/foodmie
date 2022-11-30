@@ -10,6 +10,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import { useNavigate } from "react-router-dom"
 // import swal from 'sweetalert';
 
 
@@ -19,6 +20,8 @@ const New = ({inputs, title}) => {
   const [file, setFile ] = useState("")
   const [ data, setData ] = useState({})
   const [ perc, setPerc ] = useState(null)
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const uploadFile = () => {
@@ -85,7 +88,7 @@ const New = ({inputs, title}) => {
         
       }
       );
-      console.log()
+      navigate('/customers')
       
     }catch (err) {
       console.log(err);

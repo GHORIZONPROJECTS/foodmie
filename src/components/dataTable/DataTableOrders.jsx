@@ -54,7 +54,14 @@ const DataTable = () => {
 
   console.log(data)
 
-  const savedTime    = data.timeStamp;
+
+  // const date = data.timeStamp
+
+  // const realTime = date.toDate()
+
+  // console.log(realTime)
+
+  // const savedTime    = data.timeStamp;
   // const formatedDate = new Date(savedTime).toLocaleString(
   // "en-US",
   //   {

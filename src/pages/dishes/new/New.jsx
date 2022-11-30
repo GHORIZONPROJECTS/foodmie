@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -19,6 +20,10 @@ const New = ({inputs, title}) => {
   const [file, setFile ] = useState("")
   const [ data, setData ] = useState({})
   const [ perc, setPerc ] = useState(null)
+
+  const navigate = useNavigate();
+
+  
 
   useEffect(() => {
     const uploadFile = () => {
@@ -78,7 +83,11 @@ const New = ({inputs, title}) => {
        await addDoc(collection(db, "dishes"), {
         ...data,
         timeStamp: serverTimestamp(),
+
       });
+
+      navigate('/dishes')
+      
       
     }catch (err) {
       console.log(err);

@@ -3,7 +3,7 @@ import './dataTableDishes.scss'
 import { DataGrid } from '@mui/x-data-grid';
 import { dishColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, orderBy,query } from "firebase/firestore";
 import { db } from '../../firebase'
 
 
@@ -28,10 +28,14 @@ const DataTable = () => {
     
 //LISTEN REAL TIME
 
-    const unsub = onSnapshot(collection(db, "dishes"), (snapShot) => {
+    const collectionRef = collection(db, "dishes")
+    const queryDishes = query(collectionRef, orderBy("timeStamp", "desc"))
+
+    const unsub = onSnapshot(queryDishes, (snapShot) => {
       let list = [];
       snapShot.docs.forEach((doc) => {
         list.push({ id: doc.id, ...doc.data()})
+        
       })
       setData(list)
       setIsLoading(false)

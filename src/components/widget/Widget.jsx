@@ -103,6 +103,19 @@ const Widget= ({type}) => {
 
       setAmount(lastMonthData.docs.length)
       setDiff((lastMonthData.docs.length - prevMonthData.docs.length) / (prevMonthData.docs.length) * 100)
+
+      // let timestamp = '1452488445471';
+      // let newDate = new Date(timestamp * 1000)
+      let thisDay = new Date("timeStamp")
+      let thisDate = thisDay.toLocaleString()
+      let Hours = thisDay.getHours()
+      let Minutes = thisDay.getMinutes()
+      const HourComplete = Hours + ':' + Minutes
+      let formatedTime = HourComplete
+      console.log(thisDay)
+      console.log(formatedTime)
+      console.log(thisDate)
+
     };
 
     fetchData();

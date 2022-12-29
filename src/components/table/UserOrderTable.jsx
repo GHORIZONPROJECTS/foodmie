@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import './userOrderTable.scss'
 import { db } from '../../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore' 
+import { Link } from 'react-router-dom'
 
 
 const  UserOrderTable = ({customerId}) => {
@@ -51,7 +52,7 @@ useEffect(() => {
         let list = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        list.push(doc.data())
+        list.push({id: doc.id, ...doc.data(), timeStamp: doc.data().timeStamp.toDate()})
         // console.log(doc.id, " => ", doc.data());
         console.log(list)
 
@@ -61,6 +62,8 @@ useEffect(() => {
 
       // setOrderData(doc.data())
       // console.log(orderData)
+
+      console.log(orderData.timeStamp)
 
     }
     
@@ -76,7 +79,7 @@ useEffect(() => {
            
             <TableCell className='tableCell'>Tracking ID</TableCell>
             <TableCell className='tableCell'>Name</TableCell>
-            <TableCell className='tableCell'>Email</TableCell>
+            {/* <TableCell className='tableCell'>Ordered Date</TableCell> */}
             <TableCell className='tableCell'>Price</TableCell>
             <TableCell className='tableCell'>Quantity</TableCell>
             <TableCell className='tableCell'>Telephone</TableCell>
@@ -87,7 +90,7 @@ useEffect(() => {
             <TableRow key={row.id}  className="tableRow">
               
                <TableCell className='tableCell'>
-                <span>{row.id}</span>
+                <span>{row.transacton}</span>
                 </TableCell>
               {/* <TableCell className='tableCell'>
                 <div className='cellWrapper'>
@@ -96,13 +99,26 @@ useEffect(() => {
                 </TableCell> */}
                 {/* <TableCell className='tableCell'>{row.Food}</TableCell> */}
                 <TableCell className='tableCell'>{row.fullname}</TableCell>
-                <TableCell className='tableCell'>{row.email}</TableCell>
+                {/* <TableCell className='tableCell'>{timeStamp}</TableCell> */}
                 <TableCell className='tableCell'>N{row.price}.00</TableCell>
                 <TableCell className='tableCell'>{row.quantity}</TableCell>
-                <TableCell className='tableCell'>{row.telephone}</TableCell>
-                {/* <TableCell className='tableCell'>
-                 <span className={`status ${row.status}`}>{row.status}</span>
-               </TableCell> */}
+                <TableCell className='tableCell'>
+
+                {row.status === 'RECEIVED_ORDER' && <div style={{ color:'green', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>ORDER RECEIVED</div>} 
+                {row.status === 'PROCESSING_ORDER' && <div  style={{ color:'orange', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>PROCESSING ORDER</div>} 
+                {row.status === 'DELIVERING_ORDER' && <div  style={{color:'blue', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>DELIVERYING ORDER</div>} 
+                {row.status === 'DELIVERED_ORDER' && <div style={{color:'black', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>ORDER DELIVERED</div>} 
+                {row.status === 'ORDER_COMPLETED' && <div style={{ color:'gray', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>COMPLETED ORDER</div>} 
+                {row.status === 'ORDER_DECLINED' && <div style={{color:'red', padding:'10px', alignItems:'center', borderRadius:'5px', width:'100%' }}>DECLINED ORDER</div>} 
+                    
+                </TableCell>
+                <TableCell className='tableCell'>
+                    <div style= {{padding:'5px', width:'30px', borderRadius:'5px', backgroundColor:'lightgray', color:'#666', borderWidth:'0.5px', justifyContent:'center'  }}>
+                       <Link to={`/orders/${row.id}`} style={{textDecoration:"none"}}>
+                          <div className="viewbutton">View</div>
+                       </Link>
+                    </div>
+               </TableCell>
             </TableRow>
           ))}
         </TableBody>

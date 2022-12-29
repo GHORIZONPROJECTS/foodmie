@@ -3,7 +3,7 @@ import './dataTableCustomers.scss'
 import { DataGrid } from '@mui/x-data-grid';
 import { userColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';
-import { collection, getDocs,  deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, getDocs,  deleteDoc, doc, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from '../../firebase'
 import swal from 'sweetalert';
 
@@ -25,14 +25,16 @@ const DataTable = () => {
 
 
   useEffect(() => {
-   
-    
+
 //LISTEN REAL TIME
 
-    const unsub = onSnapshot(collection(db, "customers"), (snapShot) => {
+    const collectionRef = collection(db, "customers")
+    const queryCustomers = query(collectionRef, orderBy("timeStamp", "desc"))
+
+    const unsub = onSnapshot(queryCustomers, (snapShot) => {
       let list = [];
       snapShot.docs.forEach((doc) => {
-        list.push({ id: doc.id, ...doc.data()})
+        list.push({ id: doc.id, ...doc.data(), timeStamp: doc.data().timeStamp.toDate()})
       })
       setData(list)
       setIsLoading(false)

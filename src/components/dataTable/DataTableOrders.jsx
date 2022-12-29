@@ -3,7 +3,7 @@ import './dataTableDishes.scss'
 import { DataGrid } from '@mui/x-data-grid';
 import { orderColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';
-import { collection, deleteDoc, doc, onSnapshot, query, where, orderBy } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, query, orderBy, where} from "firebase/firestore";
 import { db } from '../../firebase'
 
 
@@ -28,10 +28,13 @@ const DataTable = () => {
     
 //LISTEN REAL TIME
 // const notCapitalQuery = query(citiesRef, where("capital", "!=", false));
-    const unsub = onSnapshot(collection(db, "order"), orderBy("ORDER_RECEIVED"), (snapShot) => {
+    const collectionRef = collection(db, "order")
+    const queryOrder = query(collectionRef, orderBy("timeStamp", "desc"))
+    // const queryDate = query(queryOrder, where("status", '!=', "ORDER_COMPLETED"))
+    const unsub = onSnapshot(queryOrder, (snapShot) => {
       let list = [];
       snapShot.docs.forEach((doc) => {
-        list.push({ id: doc.id, ...doc.data()})
+        list.push({ id: doc.id, ...doc.data(), timeStamp: doc.data().timeStamp.toDate()})
         
       })
       setData(list)
@@ -53,6 +56,16 @@ const DataTable = () => {
   },[])
 
   console.log(data)
+
+  // const date = new Timestamp.toDate().toDateString();
+  // console.log(date)
+
+  // let dataTime = data.timeStamp
+
+  // let thisDay = new Date()
+  // let thisDate = thisDay.toLocaleString()
+
+  // console.log(new Date(dataTime.toDate()).toUTCString())
 
 
   // const date = data.timeStamp

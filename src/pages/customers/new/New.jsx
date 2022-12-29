@@ -128,7 +128,7 @@ const New = ({inputs, title}) => {
                 src={file 
                   ? URL.createObjectURL(file) 
                   : "../images/user.png"}
-                alt=""
+                alt="pic"
               />
               
             </div>

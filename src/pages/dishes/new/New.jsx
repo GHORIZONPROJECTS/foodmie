@@ -3,15 +3,15 @@ import './new.scss'
 import Sidebar from '../../../components/sidebar/Sidebar'
 import Navbar from '../../../components/navbar/Navbar'
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-import {serverTimestamp} from "firebase/firestore";
 import { db, storage } from "../../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom"
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
 
 
 
@@ -20,8 +20,18 @@ const New = ({inputs, title}) => {
   const [file, setFile ] = useState("")
   const [ data, setData ] = useState({})
   const [ perc, setPerc ] = useState(null)
+  const [ isloading, setIsloading ] = useState(false)
 
   const navigate = useNavigate();
+
+
+  const Spinner = () => {
+    return(
+      <span className='spinner-container'>
+          <span className='loading-spinner'></span>
+      </span>
+    )
+  }
 
   
 
@@ -77,14 +87,21 @@ const New = ({inputs, title}) => {
 
   
   const handleAdd = async(e) => {
+
     e.preventDefault()
+    setIsloading(true)
 
     try{
+       
+       
        await addDoc(collection(db, "dishes"), {
         ...data,
         timeStamp: serverTimestamp(),
+        
 
       });
+      
+      setIsloading(false)
 
       navigate('/dishes')
       
@@ -122,16 +139,18 @@ const New = ({inputs, title}) => {
         
         <div className='bottom'>
           <div className="left">
-            <div className='camerawrap'>
+            {/* <div className='camerawrap'> */}
 
               <img
                 src={file 
                   ? URL.createObjectURL(file) 
-                  : "../images/photo-camera.png"}
+                  : "../images/hamburger.png"}
                 alt=""
+                className='imgs'
+                resizeMode = "contain"
               />
               
-            </div>
+            {/* </div> */}
           </div>
           <div className='right'>
             <form onSubmit={handleAdd}>
@@ -152,7 +171,12 @@ const New = ({inputs, title}) => {
               
               )}
 
-             <button disabled={perc !== null && perc < 100} type='submit'>submit</button>
+             <button disabled={perc !== null && perc < 100} type='submit'>
+              {isloading && <span>...</span>}
+              {isloading ? <span>loading</span> : <span>Submit</span>}
+
+              
+             </button>
             </form>
           </div>
         </div>

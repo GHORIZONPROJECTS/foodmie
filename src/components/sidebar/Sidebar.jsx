@@ -73,8 +73,8 @@ const Sidebar = () => {
               <p className='title'>MAIN</p>
               {values.map((value) => (
                   <>
-                    {/* <li key = {value.id} onClick={() => setIsActive(value)} className={` normal  ${isActive == value && 'active'}`}></li> */}
-                    <li key = {value.id} >
+                   
+                   <li key = {value.id} >
                       <NavLink to={value.link} style={({ isActive }) => ({
                         backgroundColor: isActive &&  "#ece8ff",
                         textDecoration:"none",

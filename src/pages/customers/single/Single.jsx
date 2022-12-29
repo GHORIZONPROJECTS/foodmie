@@ -82,30 +82,18 @@ const Single = ({user}) => {
         <Navbar/>
         <div className="top">
           <div className="left">
-            <div className="editbutton">Edit</div>
+            {/* <div className="editbutton">Edit</div> */}
             <h2 className='title'>Information</h2>
             <div className='item'>
-            {userData.img
-              ?  <img
-                    src = {userData.img}
-                    alt="avatar"
-                    className="itemimg"
-                    width={150}
-                    height={150}
-                 /> 
-              :
-
-              <img
-                // src = {require ("./images/user.png")}
-                src="../images/user.png"
+            <img
+                src = {userData.img ? userData.img : "../images/avatar.jpg"}
                 alt="avatar"
-                className="itemimg"
-                width={150}
-                height={150}
+                style={{width:'100px', height:'100px', borderRadius:'50%'}}
+                   
+            /> 
               
-              />
-            
-            }
+
+          
                
                 <div className="details">
                   <h3 className='itemTitle'>{userData.fullname}</h3>
@@ -121,14 +109,14 @@ const Single = ({user}) => {
                     <span className='itemKey'>Address:</span>
                     <span className='itemValue'>{userData.address}</span>
                   </div>
-                  <div className='detailItem'>
-                    <span className='itemKey'>Gender:</span>
-                    <span className='iitemValue'>Male</span>
-                  </div>
+                  {/* <div className='detailItem'>
+                    <span className='itemKey'>Registered:</span>
+                    <span className='iitemValue'>{userData.timeStamp}</span>
+                  </div> */}
                 </div>
             </div>
           </div>
-          <div className='right'>
+          <div>
             <Chart 
               aspect={3/1}
               title = "Customer purchase last 6 months"

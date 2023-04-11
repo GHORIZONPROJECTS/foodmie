@@ -6,13 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import './userOrderTable.scss'
+import './driverTripTable.scss'
 import { db } from '../../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore' 
 import { Link } from 'react-router-dom'
 
 
-const  UserOrderTable = ({customerId}) => {
+const  DriverTripTable = ({driverId}) => {
 
 //   const [ rows, setRows ] = useState([])
 
@@ -46,7 +46,7 @@ useEffect(() => {
     const orderQuery = async() => {
 
       const orderRef = (collection(db, "order"));
-      const q = query(orderRef, where("userId", "==", customerId));
+      const q = query(orderRef, where("driverId", "==", driverId));
 
       const querySnapshot = await getDocs(q);
         let list = []
@@ -127,4 +127,4 @@ useEffect(() => {
   );
 }
 
-export default UserOrderTable
+export default DriverTripTable

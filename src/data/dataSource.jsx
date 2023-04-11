@@ -135,9 +135,10 @@ export const driversColumns = [
             )
         }
     },
-    { field: 'platenumber', headerName: 'Plate Number', width: 150 },
-    { field: 'fullname', headerName: 'Driver Name', width: 230 },
+    { field: 'firstname', headerName: 'Firstname', width: 100 },
+    { field: 'Lastname', headerName: 'Lastname', width: 100 },
     { field: 'telephone', headerName: 'Phone Number', width: 150 },
+    { field: 'platenumber', headerName: 'Plate Number', width: 150 },
     { field: 'status', headerName: 'Status', width: 120,
         renderCell:(params) => {
             return <div className={`cellstatus ${params.row.status}`}>{params.row.status} </div>

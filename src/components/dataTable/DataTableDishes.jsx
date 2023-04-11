@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import './dataTableDishes.scss'
+import React, { useEffect, useState } from 'react';
+import './dataTableDishes.scss';
 import { DataGrid } from '@mui/x-data-grid';
 import { dishColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';

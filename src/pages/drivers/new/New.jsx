@@ -94,7 +94,7 @@ const New = ({inputs, title}) => {
     try{
        
        
-       await addDoc(collection(db, "dishes"), {
+       await addDoc(collection(db, "drivers"), {
         ...data,
         timeStamp: serverTimestamp(),
         
@@ -103,7 +103,7 @@ const New = ({inputs, title}) => {
       
       setIsloading(false)
 
-      navigate('/dishes')
+      navigate('/drivers')
       
       
     }catch (err) {
@@ -128,11 +128,11 @@ const New = ({inputs, title}) => {
             <Link
               underline="hover"
               color="inherit"
-              href="/dishes"
+              href="/drivers"
             >
-              Dish List
+              Drivers List
             </Link>
-            <Typography color="green">New Dish</Typography>
+            <Typography color="green">New Driver</Typography>
           </Breadcrumbs>
           </div>
         </div>
@@ -144,7 +144,7 @@ const New = ({inputs, title}) => {
               <img
                 src={file 
                   ? URL.createObjectURL(file) 
-                  : "../images/hamburger.png"}
+                  : "../images/user.png"}
                 alt=""
                 className='imgs'
                 resizeMode = "contain"

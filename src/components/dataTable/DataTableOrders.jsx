@@ -100,7 +100,7 @@ const DataTable = () => {
 
     try{
 
-      await deleteDoc(doc(db, "dishes", id));
+      await deleteDoc(doc(db, "order", id));
       setData(data.filter((item) => item.id !== id))
 
     }catch(err){

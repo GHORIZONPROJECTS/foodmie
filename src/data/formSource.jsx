@@ -65,8 +65,8 @@ export const dishInput = [
     {
         id:"price",
         label: "Price",
-        type: "text",
-        placeholder:"2400",
+        type: parseInt("number"),
+        placeholder:"2000",
     },
     {
         id:"stock",
@@ -75,6 +75,58 @@ export const dishInput = [
         placeholder:"available",
     },
   
+];
+
+export const driversInput = [
+    {
+        id:"firstname",
+        label: "First Name",
+        type: "text",
+        placeholder:"Driver's First Name",
+    },
+    {
+        id:"Lastname",
+        label: "Last Name",
+        type: "text",
+        placeholder:"Drivers Last name",
+    },
+    {
+        id:"telephone",
+        label: "Telephone",
+        type: "text",
+        placeholder:"Drivers Telephone Number",
+    },
+    {
+        id:"email",
+        label: "Email",
+        type: "email",
+        placeholder:"Email",
+    },
+    {
+        id:"address",
+        label: "Drivers Address",
+        type: "text",
+        placeholder:"Address",
+    },
+    {
+        id:"nextofkin",
+        label: "Next of Kin",
+        type: "text",
+        placeholder:"Next of Kin",
+    },
+    {
+        id:"nextofkinphonenumber",
+        label: "Next of Kin Telephone",
+        type: "text",
+        placeholder:"Telephone",
+    },
+    {
+        id:"platenumber",
+        label: "Bike Plate Number",
+        type: "text",
+        placeholder:"Plate Number",
+    }
+    
 ];
 
 export const notificationInput = [

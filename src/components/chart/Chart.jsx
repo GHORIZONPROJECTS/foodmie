@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react'
+// import React, {useState, useEffect} from 'react'
 import './chart.scss'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import {db} from '../../firebase';
-import {getDoc, doc, collection, onSnapshot } from 'firebase/firestore'
+// import {db} from '../../firebase';
+// import {getDoc, doc, collection, onSnapshot } from 'firebase/firestore'
 
 // const [revenurData, setRevenueData ] = useState([])
 

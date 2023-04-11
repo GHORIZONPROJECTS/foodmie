@@ -4,7 +4,7 @@ import Dashboard from '@mui/icons-material/Dashboard';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import StoreIcon from '@mui/icons-material/Store';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
-// import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ListIcon from '@mui/icons-material/List';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -30,8 +30,8 @@ const Sidebar = () => {
     { id : 2, text : "Customers", link: "/customers", iconName : PeopleOutlineIcon, heading:""},
     { id : 3, text : "Dishes", link: "/dishes", iconName : StoreIcon, heading:""},
     { id : 4, text : "Orders", link: "/orders", iconName : Inventory2Icon, heading:""},
-    { id : 5, text : "Order History", link: "/orderHistory", iconName : ListIcon, heading:"USEFUL"},
-    // { id : 5, text : "Drivers", link: "/drivers", iconName : DeliveryDiningIcon, heading:"USEFUL"},
+    { id : 5, text : "Order History", link: "/orderHistory", iconName : ListIcon},
+    { id : 5, text : "Drivers", link: "/drivers", iconName : DeliveryDiningIcon, heading:"USEFUL"},
     { id : 6, text : "Notifications", link: "/notifications", iconName : NotificationsNoneIcon, heading:""},
     { id : 7, text : "Reviews", link: "/reviews", iconName : ReviewsIcon, heading:""},
     { id : 8, text : "Analytics", link: "/analytics", iconName : BarChartIcon, heading:"SERVICES"},

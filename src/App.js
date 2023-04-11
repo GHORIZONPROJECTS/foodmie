@@ -19,7 +19,8 @@ import OrderHistorySingle from "./pages/orderHistory/single/Single";
 import OrderList from "./pages/orders/list/List";
 import OrderSingle from "./pages/orders/single/Single";
 import DriversList from "./pages/drivers/list/List";
-// import DriverSingle from "./pages/drivers/single/Single";
+import DriverSingle from "./pages/drivers/single/Single";
+import DriversNew from "./pages/drivers/new/New"; 
 import NotificationList from "./pages/notifications/list/List";
 import NotificationSingle from "./pages/notifications/single/Single";
 import NotificationNew from "./pages/notifications/new/New"; 
@@ -30,7 +31,7 @@ import AnalyticsSingle from "./pages/analytics/single/Single";
 import SettingsList from "./pages/settings/list/List";
 import SettingsSingle from "./pages/settings/single/Single";
 import SettingsNew from "./pages/settings/new/New"; 
-import { dishInput, customerInput, notificationInput, settingsInput} from "./data/formSource";
+import { dishInput, driversInput, customerInput, notificationInput, settingsInput} from "./data/formSource";
 import './style/dark.scss'
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
@@ -129,11 +130,17 @@ function App() {
                   <DriversList/>
                 </RequireAuth>
               }/>
-              {/* <Route path=":driverId" element={
+              <Route path=":driverId" element={
               <RequireAuth>
                   <DriverSingle/>
               </RequireAuth>
-              }/> */}
+              }/>
+
+              <Route path="new" element={
+                <RequireAuth>
+                  <DriversNew inputs={driversInput} title="Add New Driver"/>
+                </RequireAuth>
+              }/>
             
             </Route>
             <Route path="notifications">

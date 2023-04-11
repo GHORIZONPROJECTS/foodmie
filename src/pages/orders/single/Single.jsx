@@ -5,24 +5,36 @@ import Navbar from '../../../components/navbar/Navbar'
 // import Chart from '../../../components/chart/Chart'
 // import SalesTable from '../../../components/table/SalesTable'
 import { useParams } from 'react-router-dom'
-import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore"
+import { doc, getDoc, updateDoc, onSnapshot, collection, query, orderBy } from "firebase/firestore"
 import { db } from '../../../firebase'
 import OrderTable from '../../../components/table/orderTable'
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { Navigation } from '@mui/icons-material'
+import { useNavigate } from "react-router-dom"
+import { Navigation } from '@mui/icons-material';
+// import driver from './images/onboardingontheway.png'
+// import driver from './animations/dispatch-rider.json';
 
 const Single = () => {
 
   const {orderId} = useParams()
 
+  const navigate = useNavigate();
+
 
   const [ orderData, setOrderData ] = useState([])
   const [ shopping, setShopping ] = useState([])
   const [ statusUpdate, setStatusUpdate ] = useState("")
+  const [ selectQuery, setSelectQuery ] = useState([])
+  const [ openModal, setOpenModal ] = useState(false)
+  const [ driverData, setDriverData ] = useState([])
+  const [ driverDetails, setDriverDetails ] = useState()
+  const [ selectedDriver, setSelectedDriver ] = useState('')
 
-
+  const closeModal = () => setOpenModal(false)
+  
+  
   const getOrder = async() => {
 
       const docRef = doc(db, "order", orderId);
@@ -44,7 +56,7 @@ const Single = () => {
 
         setShopping([...shoppingArray])
 
-        console.log(shopping)
+        // console.log(shopping)
 
       
 
@@ -73,19 +85,94 @@ const Single = () => {
     console.log(thisStatus)
         
 
-}
+ }
+
+
+ //SELECTED DRIVER INFORMATION
+
+
+
+//  const getDriverInfo = async() => {
+
+//   const docRef = doc(db, "drivers", driverDetails);
+
+//   const docSnap = await getDoc(docRef);
+
 
   
+//   if (docSnap.exists()) {
 
-    const processingOrder = async() => {
+//     console.log('selected driver:', docSnap.data())
+
+//     setSelectedDriver(docSnap.data())
+//     // console.log(userData)
+//   } else {
+//     // doc.data() will be undefined in this case
+//     console.log("No such document!");
+//   }
+// }
+
+// useEffect(()=>{
+//   getDriverInfo()
+// }, [])
+
+// console.log('selected driver:', driverDetails)
+
+// const firstname = selectedDriver.firstname;
+// const lastname = selectedDriver.Lastname;
+// const telephone = selectedDriver.telephone;
+
+
+
+
+  //PROCESSING DRIVERS
+
+    const processingOrder = async(e) => {
+
+      e.preventDefault()
+
+       try{
+
+        const docRef = doc(db, "drivers", driverDetails);
+
+        const docSnap = await getDoc(docRef);
       
-      const acceptRef = doc(db, "order", orderId);
+      
+        
+        if (docSnap.exists()) {
+      
+          console.log('selected driver:', docSnap.data())
+      
+          setSelectedDriver(docSnap.data())
+          // console.log(userData)
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+
+        const firstname = selectedDriver.firstname;
+        const lastname = selectedDriver.Lastname;
+        const telephone = selectedDriver.telephone;
+
+
+         const acceptRef = doc(db, "order", orderId);
     
-        const updateStatus = await updateDoc(acceptRef, {
-          status: "DELIVERING_ORDER"
+         await updateDoc(acceptRef, {
+
+          status: "DELIVERING_ORDER", driverFirstname: firstname, driverLastname: lastname, driverTelephone: telephone
+
         });
 
-      }
+        closeModal()
+        // navigate('/orders')
+
+      }catch (err) {
+
+            console.log(err);
+
+      } 
+
+    }
       
 
           const declineOrder = async() => {
@@ -111,7 +198,7 @@ const Single = () => {
           
            
           }
-
+    // QUERY FOR THE ORDER
 
     const getOrderStatus = async() => {
 
@@ -136,6 +223,63 @@ const Single = () => {
       getOrderStatus()
     }, [])
 
+
+    // QUERY FOR THE DRIVER
+
+    // const getSelectedDriver = async() => {
+
+    //   onSnapshot(doc(db, "drivers", driverDetails), (doc) => {
+    //   setSelectedDriver(doc.data());
+    //   console.log(selectedDriver);
+
+    // });
+
+   
+    
+    // }
+
+   
+
+    // useEffect(()=>{
+    //   getSelectedDriver()
+    // }, [])
+
+
+    //QUERY FOR ALL
+
+    useEffect(() => {
+   
+    
+      //LISTEN REAL TIME
+      
+          const collectionRef = collection(db, "drivers")
+          const queryDrivers = query(collectionRef, orderBy("timeStamp", "desc"))
+      
+          const unsub = onSnapshot(queryDrivers, (snapShot) => {
+            let list = [];
+            snapShot.docs.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data()})
+              
+            })
+            setDriverData(list)
+            // setIsLoading(false)
+          }, 
+            (error) => {
+              console.log(error)
+            }
+          );
+      
+          return () => {
+            unsub();
+          }
+      
+      //END LISTEN REAL TIME    
+      
+        },[])
+      
+        // console.log(driverData)
+      
+
     // console.log(statusUpdate.status)
 
       
@@ -153,6 +297,100 @@ const Single = () => {
   // }, [])
 
 
+  // const handleDriver = async(e) => {
+
+  //   e.preventDefault()
+  //   // setIsloading(true)
+
+  //   try{
+       
+       
+  //      await addDoc(collection(db, "dishes"), {
+  //       ...data,
+  //       timeStamp: serverTimestamp(),
+        
+
+  //     });
+      
+  //     setIsloading(false)
+
+  //     navigate('/dishes')
+      
+      
+  //   }catch (err) {
+  //     console.log(err);
+  //   } 
+
+  // }
+
+
+
+
+
+  const Modal = ({open, close}) => {
+     
+     if(!open) return null
+     return(
+      <div className='overlay'>
+        <div className="modalContainer">
+          {/* <img src="./images/onboardingontheway.png" alt="driver" /> */}
+          {/* <div className="modalLeft" style={{display:'flex', flexDirection:'column', alignContent:'center', justifyContent:"center", 
+          }}>
+          <img
+                src = {selectedDriver.img}
+                alt="avatar"
+                style={{width:'100px', height:'100px', borderRadius:'50%', marginBottom:'10px'}}
+                   
+            /> 
+            <p>{selectedDriver.firstname}</p>
+            <p>{selectedDriver.Lastname}</p>
+            <p>{selectedDriver.telephone}</p>
+          </div> */}
+          <div className="modalRight">
+            <p className="closeBtn" onClick={close}>X</p>
+            <div className="content">
+              <p className="head">Your Driver must be Ready for Delivery</p>
+              <h3 className="driver">Choose a Driver</h3>
+
+            </div>
+
+            <div className='formContainer'>
+            <form  onSubmit={processingOrder}>
+                    <div className='formInput' >
+                       
+                      <label>Driver Name:</label>
+                         <select value = {driverDetails} onChange={(e) => setDriverDetails(e.target.value)}>
+                           <option>Select a Driver</option>
+                           {
+                            driverData.map((driver, index) => 
+                            <option value={driver.id} key={index}>{driver.firstname} {driver.Lastname} - {driver.telephone}</option>
+                            )
+                           }
+                          
+                         </select>
+                      </div>
+             
+                      <div className="btnContainer">
+
+                        <button className="btnoutline" onClick={close}>
+                          <span className="bold">No</span>, Thanks
+                        </button>
+                        <button className="btnprimary" type='submit' >
+                          <span className='bold'>Yes</span>,Continue
+                        </button>
+
+                      </div>
+
+               </form>
+
+
+            </div>
+           
+          </div>
+        </div>
+      </div>
+     )
+  }
 
 
   return (
@@ -262,8 +500,13 @@ const Single = () => {
 
                   { ((newStatus === 'PROCESSING_ORDER') || (newStatus === 'DELIVERING_ORDER') || (newStatus === 'DELIVERED_ORDER') )
 
-                    ?   <div>
-                          <button className='processing' onClick={processingOrder}>PROCESSING ORDER</button>
+                    ?   
+                        
+                        
+                        <div>
+                          {/* <button className='processing' onClick={processingOrder}>PROCESSING ORDER</button> */}
+                          <button className='processing' onClick={() => setOpenModal(true)}>PROCESSING ORDER</button>
+                          <Modal open={openModal} close={closeModal}/>
                         </div>
 
                     :   <div>

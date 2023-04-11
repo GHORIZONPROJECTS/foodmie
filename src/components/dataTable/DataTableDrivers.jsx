@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './dataTableDishes.scss'
+import './dataTableDrivers.scss'
 import { DataGrid } from '@mui/x-data-grid';
 import { driversColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';
@@ -28,22 +28,22 @@ const DataTable = () => {
     
 //LISTEN REAL TIME
 
-    // const unsub = onSnapshot(collection(db, "dishes"), (snapShot) => {
-    //   let list = [];
-    //   snapShot.docs.forEach((doc) => {
-    //     list.push({ id: doc.id, ...doc.data()})
-    //   })
-    //   setData(list)
-    //   setIsLoading(false)
-    // }, 
-    //   (error) => {
-    //     console.log(error)
-    //   }
-    // );
+    const unsub = onSnapshot(collection(db, "drivers"), (snapShot) => {
+      let list = [];
+      snapShot.docs.forEach((doc) => {
+        list.push({ id: doc.id, ...doc.data()})
+      })
+      setData(list)
+      setIsLoading(false)
+    }, 
+      (error) => {
+        console.log(error)
+      }
+    );
 
-    // return () => {
-    //   unsub();
-    // }
+    return () => {
+      unsub();
+    }
 
 //END LISTEN REAL TIME    
 
@@ -51,20 +51,20 @@ const DataTable = () => {
 
   console.log(data)
 
-//   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
 
-//     try{
+    try{
 
-//       await deleteDoc(doc(db, "dishes", id));
-//       setData(data.filter((item) => item.id !== id))
+      await deleteDoc(doc(db, "drivers", id));
+      setData(data.filter((item) => item.id !== id))
 
-//     }catch(err){
+    }catch(err){
 
-//       console.log(err)
+      console.log(err)
 
-//     }
+    }
    
-//   }
+  }
 
   const actionColumn = [
 
@@ -73,11 +73,11 @@ const DataTable = () => {
             renderCell:(params) => {
                 return(
                     <div className='cellAction'>
-                       <Link to="/drivers/test" style={{textDecoration:"none"}}>
+                       <Link to={`/drivers/${params.row.id}`} style={{textDecoration:"none"}}>
                           <div className="viewbutton">View</div>
                        </Link>
-                       <div className='deletebutton'>Delete</div>
-                       {/* <div className='deletebutton' onClick={() => handleDelete(params.row.id)}>Delete</div> */}
+                       {/* <div className='deletebutton'>Delete</div> */}
+                       <div className='deletebutton' onClick={() => handleDelete(params.row.id)}>Delete</div>
                     </div>
                 )
             }
@@ -89,8 +89,14 @@ const DataTable = () => {
     <div className="datatable">
       <div className='datatableTitle'>
             All Drivers
+            <Link to="/drivers/new"  style={{textDecoration:"none"}} >
+          <div className='link'>
+            Add New Driver
+          </div>
+        </Link>
       </div>
       
+    {isLoading ? <Spinner/> : 
         <DataGrid
             className="userTableGrid"
             rows={data}
@@ -99,18 +105,7 @@ const DataTable = () => {
             rowsPerPageOptions={[5]}
             checkboxSelection
         />
-    
-{/* 
-    {isLoading ? <Spinner/> : 
-        <DataGrid
-            className="userTableGrid"
-            rows={data}
-            columns={dishColumns.concat(actionColumn)}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-        />
-    } */}
+    }
     </div>
   )
 }

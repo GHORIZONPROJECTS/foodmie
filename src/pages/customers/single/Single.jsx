@@ -23,15 +23,10 @@ const Single = ({user}) => {
 
       const docSnap = await getDoc(docRef);
 
-      // console.log(docSnap.data())
-
-      // setUserData(docSnap.data())
-
-      // console.log(userData)
+    
       
       if (docSnap.exists()) {
 
-        // console.log("Document data:", docSnap.data());
         setUserData(docSnap.data())
         // console.log(userData)
       } else {

@@ -4,16 +4,20 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined'; import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
-import { collection, where, query, getDocs } from 'firebase/firestore'
+import { collection, where, query, getDocs, onSnapshot } from 'firebase/firestore'
 import { db } from '../../firebase'
 import { Link } from "react-router-dom";
 
 const Widget= ({type}) => {
 
-  const [amount, setAmount] = useState(null);
   const [diff, setDiff] = useState(null);
-  
+  const [customer, setCustomer] = useState(null)
+  const [order, setOrder] = useState(null)
+  const [datas, setDatas ] = useState([])
+  const [total, setTotal] = useState(null)
 
+
+  
   let data;
 
   switch(type){
@@ -23,6 +27,7 @@ const Widget= ({type}) => {
         isMoney:false,
         link:"see all customers",
         page:"/customers",
+        amount: customer,
         icon:<
           PersonOutlineOutlinedIcon className="icon" 
           style={{
@@ -36,7 +41,8 @@ const Widget= ({type}) => {
           title:"ORDERS",
           isMoney:false,
           link:"view all orders",
-          page:"/customers",
+          page:"/orders",
+          amount: order,
           icon:<
             ShoppingCartOutlinedIcon className="icon"
             style={{
@@ -52,7 +58,8 @@ const Widget= ({type}) => {
           title:"EARNINGS",
           isMoney:true,
           link:"view net earnings",
-          page:"/customers",
+          page:"/earnings",
+          amount: total ,
           icon:<MonetizationOnOutlinedIcon className="icon"
           style={{
             color:"green",
@@ -66,7 +73,8 @@ const Widget= ({type}) => {
           title:"BALANCE",
           isMoney:true,
           link:"see details",
-          page:"/customers",
+          page:"/balance",
+          amount: customer,
           icon:<AccountBalanceWalletOutlinedIcon className="icon"
           style={{
             color:"purple",
@@ -78,6 +86,68 @@ const Widget= ({type}) => {
       default:
       break
   }
+
+
+  useEffect(() => {
+
+    //LISTEN REAL TIME
+    
+        const collectionRef = collection(db, "order")
+    
+        const unsub = onSnapshot(collectionRef, (snapShot) => {
+          let list = [];
+          // let total = 0
+          
+          snapShot.docs.forEach((doc) => {
+            list.push({price:doc.data().price})
+          })
+          setDatas(list)
+          const earning = list.reduce((tot, currentValue) => tot = tot + currentValue.price,0);
+          setTotal(earning)
+          }, 
+            (error) => {
+              console.log(error)
+            }
+          );
+      
+          return () => {
+            unsub();
+          }
+      
+    //END LISTEN REAL TIME    
+    
+      },[])
+
+    
+
+    // console.log('earning:', earning);
+
+    console.log(datas);
+    console.log(total);
+
+    // const users = [{ name: 'Tom', age: 21}, { name: 'Mike', age: 23}, { name: 'Anna', age: 54}]
+
+    // const getAverageAge = (datas) => {
+    //   let sum = 0
+    //   for (let i = 0; i < datas.length; i++) {
+    //     sum += datas[i].price
+    //   }
+    //   return sum
+      
+    // }
+  
+    //   getAverageAge(datas) 
+
+
+
+      
+
+    
+    
+
+    // console.log('sum:', sum);
+
+
 
   useEffect(() => {
     const fetchData = async() => {
@@ -98,24 +168,38 @@ const Widget= ({type}) => {
         where("timeStamp", ">", prevMonth)
       );
 
+      const customerQuery = collection(db, "customers")
+      const allCustomer = await getDocs(customerQuery)
+      setCustomer(allCustomer.docs.length)
+
+      const orderQuery = collection(db, "order")
+      const allOrder = await getDocs(orderQuery)
+      setOrder(allOrder.docs.length)
+
+
+      // const collectionRef = collection(db, "order")
+    
+    
       const lastMonthData = await getDocs(lastMonthQuery)
       const prevMonthData = await getDocs(prevMonthQuery)
 
-      setAmount(lastMonthData.docs.length)
+    
       setDiff((lastMonthData.docs.length - prevMonthData.docs.length) / (prevMonthData.docs.length) * 100)
 
       // let timestamp = '1452488445471';
       // let newDate = new Date(timestamp * 1000)
-      let thisDay = new Date("timeStamp")
-      let thisDate = thisDay.toLocaleString()
-      let Hours = thisDay.getHours()
-      let Minutes = thisDay.getMinutes()
-      const HourComplete = Hours + ':' + Minutes
-      let formatedTime = HourComplete
-      console.log(thisDay)
-      console.log(formatedTime)
-      console.log(thisDate)
-
+      // let thisDay = new Date(timeStamp)
+      // let thisDate = thisDay.toLocaleString()
+      // let Hours = thisDay.getHours()
+      // let Minutes = thisDay.getMinutes()
+      // let HourComplete = Hours + ':' + Minutes
+      // let formatedTime = HourComplete
+      // console.log(thisDay)
+      // console.log(formatedTime)
+      // console.log(thisDate)
+      // console.log(thisDay)
+      // console.log(today)
+        
     };
 
     fetchData();
@@ -127,7 +211,7 @@ const Widget= ({type}) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter" to>
-          {data.isMoney && '$'}{amount}
+          {data.isMoney && 'N'}{data.amount}
         </span>
         <Link to={data.page} className='page'>
         <span className="link">{data.link}</span>

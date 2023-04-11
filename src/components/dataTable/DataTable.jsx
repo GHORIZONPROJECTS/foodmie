@@ -3,8 +3,8 @@ import './dataTable.scss'
 import { DataGrid } from '@mui/x-data-grid';
 import { userRows,userColumns } from '../../data/dataSource';
 import { Link } from 'react-router-dom';
-import { collection, getDocs,  deleteDoc, doc, onSnapshot } from "firebase/firestore";
-import { db } from '../../firebase'
+// import { collection, getDocs,  deleteDoc, doc, onSnapshot } from "firebase/firestore";
+// import { db } from '../../firebase'
 
 
 

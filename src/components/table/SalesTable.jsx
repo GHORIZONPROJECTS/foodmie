@@ -10,81 +10,7 @@ import './salesTable.scss'
 import { db } from '../../firebase';
 import { getDoc, doc, collection, onSnapshot } from 'firebase/firestore' 
 
-// const rows = [
-//   {
-//       id:'1utir',
-//       Food:'Chicken and Chips',
-//       image:'../images/chips.jpg',
-//       customer:'James Emeka',
-//       date:'2 August',
-//       time:'10am',
-//       amount:'4',
-//       coin:'300',
-//       method:'Card',
-//       status:'delivered'
-//   },
-//   {
-//       id:'2teye',
-//       Food:'Fried Rice and Chicken',
-//       image:'../images/friedrice.jpg',
-//       customer:'Sarah Zainab',
-//       date:'2 August',
-//       time:'2pm',
-//       amount:'3',
-//       coin:'300',
-//       method:'Card',
-//       status:'delivered'
-//   },
-//   {
-//       id:'3jdhd',
-//       Food:'Amala and Ewedu with Ogufe',
-//       image:'../images/gbegiri.jpg',
-//       customer:'Chioma Chukwudi',
-//       date:'3 August',
-//       time:'5pm',
-//       amount:'5',
-//       coin:'600',
-//       method:'Card',
-//       status:'delivered',
-//   },
-//   {
-//     id:'4utir',
-//     Food:'Plantain and fried Egg',
-//     image:'../images/plantainegg.jpg',
-//     customer:'Chinedu Nkem',
-//     date:'4 August',
-//     time:'1pm',
-//     amount:'4',
-//     coin:'2700',
-//     method:'Card',
-//     status:'canceled'
-// },
-// {
-//     id:'3teye',
-//     Food:'Rice and Sauce',
-//     image:'../images/rice-sauce.jpg',
-//     customer:'Michael John',
-//     date:'1 August',
-//     time:'5pm',
-//     amount:'3',
-//     coin:'250',
-//     method:'Card',
-//     status:'delivered'
-// },
-// {
-//     id:'6jdhd',
-//     Food:'sandwich',
-//     image:'../images/sandwich.jpg',
-//     customer:'Chioma Chukwudi',
-//     date:'3 August',
-//     time:'5pm',
-//     amount:'4',
-//     coin:'400',
-//     method:'Card',
-//     status:'delivered',
-// },
 
-// ]
 
 const  SalesTable = () => {
 
@@ -100,8 +26,7 @@ const  SalesTable = () => {
             list.push({ id: doc.id, ...doc.data()})
           })
           setRows(list)
-          // setIsLoading(false)
-          // console.log(data)
+          
         }, 
           (error) => {
             console.log(error)

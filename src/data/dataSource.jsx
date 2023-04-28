@@ -27,7 +27,7 @@ export const userColumns = [
 ]
 
 export const dishColumns = [
-        { field: 'id', headerName: 'ID', width: 80 },
+        { field: '@id', headerName: 'ID', width: 80 },
         { 
             field: 'photo', headerName: 'Photo', width:100,
             renderCell:(params) => {

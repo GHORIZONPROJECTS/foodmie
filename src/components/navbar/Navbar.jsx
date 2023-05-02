@@ -42,6 +42,9 @@ useEffect(()=>{
 }, [])
 
 
+
+
+
  console.log(currentUser)
  console.log(currentUser.uid)
 
